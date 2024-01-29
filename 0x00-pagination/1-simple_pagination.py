@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+"""Task 1: Simple pagination.
+"""
+
 import csv
 import math
 from typing import List, Tuple
@@ -32,8 +35,7 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-            """Retrieves a page of data.
-        """
+        """Retrieves a page of data."""
         assert type(page) == int and type(page_size) == int
         assert page > 0 and page_size > 0
         start, end = index_range(page, page_size)
