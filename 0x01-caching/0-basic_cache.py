@@ -7,6 +7,7 @@ BaseCaching and is a caching system:
 
 
 from baseclass import BaseCaching
+from typing import Dict, Optional
 
 
 class BasicCache(BaseCaching):
@@ -24,7 +25,7 @@ class BasicCache(BaseCaching):
         return None.
     """
 
-    def put(self, key, item):
+    def put(self, key, item) -> Optional[Dict]:
         """put into cache"""
         if key is None:
             return
@@ -32,7 +33,7 @@ class BasicCache(BaseCaching):
             return
         self.cache_data[key] = item
 
-    def get(self, key):
+    def get(self, key) -> Optional[Dict]:
         """get item in cache"""
         val = None
         if key is not None:
