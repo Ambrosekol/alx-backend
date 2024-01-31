@@ -27,15 +27,9 @@ class BasicCache(BaseCaching):
 
     def put(self, key, item) -> Optional[Dict]:
         """put into cache"""
-        if key is None:
-            return
-        if item is None:
-            return
-        self.cache_data[key] = item
+        if key is not None and item is not None:
+            self.cache_data[key] = item
 
     def get(self, key) -> Optional[Dict]:
         """get item in cache"""
-        val = None
-        if key is not None:
-            val = self.cache_data.get(key)
-        return val
+        return self.cache_data.get(key, None)
