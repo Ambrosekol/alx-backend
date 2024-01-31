@@ -6,11 +6,13 @@ BaseCaching and is a caching system:
 """
 
 
-from baseclass import BaseCaching
-from typing import Dict, Optional
+from requests_cache import BaseCache
 
 
-class BasicCache(BaseCaching):
+BaseCache = __import__('baseclass').BaseCaching
+
+
+class BasicCache(BaseCache):
     """
     You must use self.cache_data - dictionary from the
     parent class BaseCaching
@@ -25,11 +27,11 @@ class BasicCache(BaseCaching):
         return None.
     """
 
-    def put(self, key, item) -> Optional[Dict]:
+    def put(self, key, item):
         """put into cache"""
         if key is not None and item is not None:
             self.cache_data[key] = item
 
-    def get(self, key) -> Optional[Dict]:
+    def get(self, key):
         """get item in cache"""
         return self.cache_data.get(key, None)
