@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 """
 Create a class BasicCache that inherits from
 BaseCaching and is a caching system:
 """
 
-BaseCaching = __import__('baseclass').BaseCaching
+BaseCaching = __import__('base_caching.py').BaseCaching
 
 
 class BasicCache(BaseCaching):
