@@ -18,7 +18,7 @@ class LIFOCache(base_caching.BaseCaching):
     def put(self, key, item):
         """Register a key if !empty and checks if > MAX_ITEMS"""
         if key is not None and item is not None:
-            self.cache_data.update(key=item)
+            self.cache_data.update({key: item})
             keys = [val for val in self.cache_data.keys()]
             if len(keys) > self.MAX_ITEMS:
                 self.cache_data.pop(keys.pop())
