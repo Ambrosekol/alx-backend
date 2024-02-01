@@ -5,6 +5,7 @@ is a caching system:
 """
 
 
+from threading import RLock
 import base_caching
 
 
@@ -15,15 +16,40 @@ class LIFOCache(base_caching.BaseCaching):
     You can overload def __init__(self): but don't forget to call
     the parent init: super().__init__()
     """
+    def __init__(self):
+        """ Instantiation method, sets instance attributes
+        """
+        super().__init__()
+        self.__keys = []
+        self.__rlock = RLock()
+
     def put(self, key, item):
-        """Register a key if !empty and checks if > MAX_ITEMS"""
+        """ Add an item in the cache
+        """
         if key is not None and item is not None:
-            self.cache_data.update({key: item})
-            keys = [val for val in self.cache_data.keys()]
-            if len(keys) > self.MAX_ITEMS:
-                self.cache_data.pop(keys.pop())
-                print("DISCARD: {}".format(keys.pop()))
+            keyOut = self._balance(key)
+            with self.__rlock:
+                self.cache_data.update({key: item})
+            if keyOut is not None:
+                print('DISCARD: {}'.format(keyOut))
 
     def get(self, key):
-        """return a specific key else none"""
-        return self.cache_data.get(key, None)
+        """ Get an item by key
+        """
+        with self.__rlock:
+            return self.cache_data.get(key, None)
+
+    def _balance(self, keyIn):
+        """ Removes the earliest item from the cache at MAX size
+        """
+        keyOut = None
+        with self.__rlock:
+            keysLength = len(self.__keys)
+            if keyIn not in self.__keys:
+                if len(self.cache_data) == base_caching.BaseCaching.MAX_ITEMS:
+                    keyOut = self.__keys.pop(keysLength - 1)
+                    self.cache_data.pop(keyOut)
+            else:
+                self.__keys.remove(keyIn)
+            self.__keys.insert(keysLength, keyIn)
+        return keyOut
