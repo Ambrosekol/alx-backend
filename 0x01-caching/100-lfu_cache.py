@@ -44,7 +44,8 @@ class LFUCache(BaseCaching):
         with self.__rlock:
             if keyIn not in self.__stats:
                 if len(self.cache_data) == BaseCaching.MAX_ITEMS:
-                    keyOut = min(self.__stats, key=self.__stats.get)
+                    keyOut = min(self.__stats,
+                                 key=self.__stats.get)  # type: ignore
                     self.cache_data.pop(keyOut)
                     self.__stats.pop(keyOut)
             self.__stats[keyIn] = self.__stats.get(keyIn, 0) + 1
